@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { MemberList } from './WorkspaceSettings/MemberList/MemberList';
-import { deleteProject, listProjects } from '../../lib/api';
+import { ProjectManager } from './ProjectManager/ProjectManager';
+import { createTask, listProjects } from '../../lib/api';
 
 /**
- * Container for story-3 — synthesised by the AEGIS integration pass [SYS-264].
+ * Container for story-4 — synthesised by the AEGIS integration pass [SYS-264].
  * Mounts the screen's generated component(s), fetches list data, and wires
  * action handlers to the typed API client.
  */
@@ -23,21 +23,20 @@ export default function Page(): React.ReactElement {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { reload(); }, []);
 
-  const handleDelete = (arg?: any) =>
-    Promise.resolve((deleteProject as any)(arg)).then(() => reload())
+  const handleCreate = (arg?: any) =>
+    Promise.resolve((createTask as any)(arg)).then(() => reload())
       .catch((e: any) => setError(e?.message ?? String(e)));
 
-  const memberListProps: any = {
-    members: data,
-    onRemoveMember: handleDelete,
-    onUpdateRole: () => {},
+  const projectManagerProps: any = {
+    projects: data,
     isLoading: isLoading,
     error: error,
+    onCreateProject: handleCreate,
   };
 
   return (
     <div>
-      <MemberList {...memberListProps} />
+      <ProjectManager {...projectManagerProps} />
     </div>
   );
 }
